@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
 err() {
 	if [ $# -eq 0 ]; then
@@ -36,13 +36,14 @@ F=/etc/profile.d/Z99-docker-run.sh
 
 cat <<EOT > "$F"
 cd '$CURDIR'
-
 EOT
 
 if [ $# -gt 0 ]; then
 	cat <<-EOT >> "$F"
+
 	exec $*
 	EOT
 fi
 
+grep -n ^ "$F"
 su - "$USER_NAME"
