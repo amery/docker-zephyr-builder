@@ -37,16 +37,19 @@ if [ -z "$WS" ]; then
 	WS="$(find_git_root "$PWD" | tail -n1)"
 fi
 
+[ -d "$WS" ] || WS="$PWD"
+
 set -- \
 	-e USER_HOME="$HOME" \
 	-e USER_NAME="$USER_NAME" \
 	-e USER_UID="$USER_UID" \
 	-e USER_GID="$USER_GID" \
 	-e CURDIR="$PWD" \
+	-e WS="$WS" \
 	"$DOCKER_ID" "$@"
 
 # persistent volumes
-home_dir="${WS:-$PWD}/.docker-run-cache/home/$USER_NAME"
+home_dir="$WS/.docker-run-cache/home/$USER_NAME"
 parent_dir="$(dirname "$PWD")"
 
 for x in "$home_dir"; do
@@ -73,7 +76,7 @@ set -- $(volumes <<EOT
 $parent_dir
 $HOME
 $PWD
-${WS:-$PWD}
+$WS
 EOT
 ) "$@"
 
