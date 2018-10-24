@@ -34,3 +34,11 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
+
+# zephyr dependencies
+#
+RUN apt-get update && apt-get install --no-install-recommends -y \
+	crossbuild-essential-armel \
+	device-tree-compiler \
+	python3-wheel \
+        && apt-get clean
