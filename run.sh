@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
 # select image
 DOCKER_DIR="$(dirname "$(readlink -f "$0")")"
@@ -58,7 +58,7 @@ volumes() {
 	sort -uV | while read x; do
 		case "$x" in
 		"$HOME")
-			echo "-v $x:$home_dir"
+			echo "-v $home_dir:$x"
 			;;
 		''|/)
 			;;
@@ -78,4 +78,5 @@ EOT
 ) "$@"
 
 # and finally run within the container
+set -x
 exec docker run --rm -ti "$@"
