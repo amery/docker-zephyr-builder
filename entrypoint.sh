@@ -35,6 +35,13 @@ fi
 F=/etc/profile.d/Z99-docker-run.sh
 
 cat <<EOT > "$F"
+cd '$WS'
+if [ ! -d \$HOME/.local ]; then
+	pip3 install -r scripts/requirements.txt || exit \$?
+fi
+export ZEPHYR_TOOLCHAIN_VARIANT=cross-compile
+export CROSS_COMPILE=/usr/bin/arm-none-eabi-
+. zephyr-env.sh
 cd '$CURDIR'
 EOT
 
