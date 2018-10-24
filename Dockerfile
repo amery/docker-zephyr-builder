@@ -13,11 +13,21 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
         build-essential \
         ca-certificates \
         language-pack-en \
-        && apt-get clean
+	&& apt-get clean
 
 # use a locale with utf-8 support
+#
 ENV LANG=en_GB.UTF-8
 RUN update-locale LANG=$LANG LC_MESSAGES=POSIX
+
+# build essentials and basic interactivity
+#
+RUN apt-get update && apt-get install --no-install-recommends -y \
+	build-essential \
+	python3-pip \
+	python3-setuptools \
+	vim \
+	&& apt-get clean
 
 # trampoline
 COPY entrypoint.sh /entrypoint.sh
